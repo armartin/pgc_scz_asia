@@ -1,0 +1,20 @@
+#PBS -lwalltime=4:00:00
+#PBS -lnodes=1
+#PBS -S /bin/bash
+#PBS -N accuracy
+#PBS -j oe
+#PBS -o /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/logs
+
+for i in {1..16}; do
+(
+python /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/scripts/compute_accuracy.py \
+--eval /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/meta_transfer/prs_list \
+--prange /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/score_range.txt \
+--profile_prefix /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/meta_transfer/prs/ \
+--eur_pca /home/armartin/pgc_scz_eur/prune.bfile.cobg.PGC_SCZ49.sh2.menv.mds_cov \
+--asn_pca /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/meta_transfer/merge14_pgc_scz_asia.menv.mds_cov \
+--i ${i} \
+--out /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/meta_transfer/prs_accuracy.txt
+) &
+done
+wait

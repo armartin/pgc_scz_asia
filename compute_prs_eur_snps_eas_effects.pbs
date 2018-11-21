@@ -1,0 +1,22 @@
+#PBS -lwalltime=2:00:00
+#PBS -lnodes=1 
+#PBS -S /bin/bash
+#PBS -N profile
+#PBS -j oe
+#PBS -o /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/logs
+#PBS -t 1-14
+
+module load plink2
+
+FILE=`sed "${PBS_ARRAYID}q;d" /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/prefixes.txt`
+BASE=`basename $FILE`
+DIR=`dirname $FILE`
+
+SCORE_DIR=/home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin
+
+#2. Make SCZ PRS, scoring clumped variants only
+plink --bfile ${FILE} \
+--extract ${SCORE_DIR}/daner_PGC_SCZ52.p3.0215a.euro.clumped.mhc \
+--q-score-range ${SCORE_DIR}/score_range.txt ${SCORE_DIR}/daner_PGC_SCZ52.p3.0215a.euro.lnOR 2 11 header \
+--score ${SCORE_DIR}/daner_pgc_scz_asia_meta_run27.lnOR 2 4 20 \
+--out ${SCORE_DIR}/eur_snps_eas_effects/$BASE

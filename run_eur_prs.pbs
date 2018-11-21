@@ -1,0 +1,14 @@
+#PBS -lwalltime=8:00:00
+#PBS -lnodes=1:mem64gb
+#PBS -S /bin/bash
+#PBS -N eur_prs
+#PBS -j oe
+#PBS -o /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/logs
+
+module load plink2
+for i in {1..16}; do
+(
+  /home/armartin/pgc_scz_asia/imp_collect/prs_score/armartin/meta_transfer/prs/asn_eur_eur2_iter${i}.sh
+) &
+done
+wait
